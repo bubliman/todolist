@@ -1,10 +1,51 @@
+/* li button {
+    visibility: hidden;
+} */
 li:hover {
-    background-color: lightgray;
-    
+    background-color: #DDD;    
 }
+li:hover button {
+    visibility: visible;
+}
+li button {
+    float:right;
+}
+li {
+    padding-right:600px;
+    height:25px;
+    vertical-align: center;
+}
+
 li span{
     margin-right: 25px;
+    padding: 0 5px 0 5px;
 }
 .finished {
     text-decoration: line-through;
+    text-decoration-color: rgb(0, 0, 0);
+}
+.finished span {
+    background-color: lightgreen;
+    color: rgb(0, 0, 0);
+    
+}
+.failed {
+    text-decoration: underline;
+}
+.failed span {
+    background-color: lightcoral;
+    
+}
+#remove-icon {
+    height: 1em;
+}
+.fail-button {
+    background-color: lightcoral;
+    border-color: red;
+    border-radius: 15%;
+}
+.finish-button {
+    background-color: lightgreen;
+    border-color: green;
+    border-radius: 15%;
 }
