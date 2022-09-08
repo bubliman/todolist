@@ -5,3 +5,6 @@ li:hover {
 li button {
     margin-left: 25px;
 }
+.finished {
+    text-decoration: line-through;
+}
