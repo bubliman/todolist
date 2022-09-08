@@ -3,7 +3,10 @@ var subTaskCount = 0
 var subListCreated = false
 var taskFinished = Array(taskCount)
 var subTaskFinished = Array(subTaskCount)
-// var taskFinished = taskFinished.fill(false)
+var taskFailed = Array(taskCount)
+var subTaskFailed = Array(subTaskCount)
+
+
 
 // const form = document.getElementById('edit-form')
 // form.addEventListener('onsumbit', getTask())
@@ -36,51 +39,85 @@ function createTask(task) {
     const newSpan = document.createElement('span')
     const newRemoveButton = document.createElement('button')
     const newFinishButton = document.createElement('button')
+    const newFailButton = document.createElement('button')
+
+    const newIcon = document.createElement('img')
+    newIcon.setAttribute('src','/images/trash.png')
+    newIcon.setAttribute('alt','Remove')
+    newIcon.setAttribute('id','remove-icon')
+    const finishChar = '✔️'
+    const failChar = '✖️'
+    
 
     newSpan.innerText = task
     
     if (checkboxSubTask.checked == false) {
         taskCount = taskCount + 1
         newItem.setAttribute('id','task-' + taskCount)
-        newRemoveButton.setAttribute('id','remove-button-' + taskCount)
-        newRemoveButton.setAttribute('type','button')
-        newRemoveButton.setAttribute('onclick','removeTask('+taskCount +')')
-        newRemoveButton.innerText = 'Remove'
+        newSubItem.setAttribute('class','task')
 
         newFinishButton.setAttribute('id','finish-button-' + taskCount)
+        newFinishButton.setAttribute('class','finish-button')
         newFinishButton.setAttribute('type','button')
         newFinishButton.setAttribute('onclick','finishTask('+taskCount +')')
         taskFinished[taskCount - 1] = false
-        newFinishButton.innerText = 'Finish' 
+        newFinishButton.innerText = finishChar 
+
+        newFailButton.setAttribute('id','fail-button-' + taskCount)
+        newFailButton.setAttribute('class','fail-button')
+        newFailButton.setAttribute('type','button')
+        newFailButton.setAttribute('onclick','failTask('+taskCount +')')
+        taskFailed[taskCount - 1] = false
+        newFailButton.innerText = failChar 
+
+        newRemoveButton.setAttribute('id','remove-button-' + taskCount)
+        newRemoveButton.setAttribute('class','remove-button')
+        newRemoveButton.setAttribute('type','button')
+        newRemoveButton.setAttribute('onclick','removeTask('+taskCount +')')
+        
+        newRemoveButton.appendChild(newIcon)
         newItem.appendChild(newSpan)
-        newItem.appendChild(newRemoveButton)     
-        newItem.appendChild(newFinishButton)  
+        newItem.appendChild(newRemoveButton)  
+        newItem.appendChild(newFailButton) 
+        newItem.appendChild(newFinishButton) 
         list.appendChild(newItem)
         subListCreated = false
+
+        
     }
     else
     {
         subTaskCount = subTaskCount + 1
         const subTaskList = document.getElementById('subtask-list' + taskCount)
         
+        newFinishButton.setAttribute('id','finish-button-' + subTaskCount)
+        newFinishButton.setAttribute('class','finish-button')
+        newFinishButton.setAttribute('type','button')
+        newFinishButton.setAttribute('onclick','finishSubTask('+subTaskCount+')')
+        subTaskFinished[subTaskCount - 1] = false
+        newFinishButton.innerText = finishChar 
+
+        newFailButton.setAttribute('id','fail-button-' + subTaskCount)
+        newFailButton.setAttribute('class','fail-button')
+        newFailButton.setAttribute('type','button')
+        newFailButton.setAttribute('onclick','failSubTask('+subTaskCount+')')
+        subTaskFailed[subTaskCount - 1] = false
+        newFailButton.innerText = failChar 
+
+        newRemoveButton.setAttribute('id','remove-button-' + subTaskCount)
+        newRemoveButton.setAttribute('class','remove-button')
+        newRemoveButton.setAttribute('type','button')
+        newRemoveButton.setAttribute('onclick','removeSubTask('+subTaskCount+')')
 
         if (subListCreated == false) {
         newSubList.setAttribute('id','subtask-list' + taskCount)
         newSubItem.setAttribute('id','subtask-' + subTaskCount)
+        newSubItem.setAttribute('class','subtask')
 
-        newRemoveButton.setAttribute('id','remove-button-' + subTaskCount)
-        newRemoveButton.setAttribute('type','button')
-        newRemoveButton.setAttribute('onclick','removeSubTask('+subTaskCount+')')
-        newRemoveButton.innerText = 'Remove'
-
-        newFinishButton.setAttribute('id','finish-button-' + subTaskCount)
-        newFinishButton.setAttribute('type','button')
-        newFinishButton.setAttribute('onclick','finishSubTask('+subTaskCount+')')
-        subTaskFinished[subTaskCount - 1] = false
-        newFinishButton.innerText = 'Finish' 
-
+        newRemoveButton.appendChild(newIcon)
         newSubItem.appendChild(newSpan)
-        newSubItem.appendChild(newRemoveButton)
+        newSubItem.appendChild(newRemoveButton) 
+        newSubItem.appendChild(newFailButton) 
         newSubItem.appendChild(newFinishButton)
         newSubList.appendChild(newSubItem)
         list.appendChild(newSubList)
@@ -88,20 +125,12 @@ function createTask(task) {
         }
         else{
             newSubItem.setAttribute('id','subtask-' + subTaskCount)
+            newSubItem.setAttribute('class','subtask')
 
-            newRemoveButton.setAttribute('id','remove-button-' + subTaskCount)
-            newRemoveButton.setAttribute('type','button')
-            newRemoveButton.setAttribute('onclick','removeSubTask('+subTaskCount+')')
-            newRemoveButton.innerText = 'Remove'
-    
-            newFinishButton.setAttribute('id','finish-button-' + subTaskCount)
-            newFinishButton.setAttribute('type','button')
-            newFinishButton.setAttribute('onclick','finishSubTask('+subTaskCount+')')
-            subTaskFinished[subTaskCount - 1] = false
-            newFinishButton.innerText = 'Finish' 
-
+            newRemoveButton.appendChild(newIcon)
             newSubItem.appendChild(newSpan)
-            newSubItem.appendChild(newRemoveButton)
+            newSubItem.appendChild(newRemoveButton) 
+            newSubItem.appendChild(newFailButton) 
             newSubItem.appendChild(newFinishButton)
             subTaskList.appendChild(newSubItem)
         }
@@ -126,6 +155,19 @@ function finishTask(taskNumber) {
         taskFinished[taskNumberArray] = false
     }
 }
+function failTask(taskNumber) {
+    const taskNumberArray = taskNumber - 1
+    const task = document.getElementById('task-' + taskNumber)
+    if (taskFailed[taskNumberArray] == false) {
+        task.setAttribute('class','failed')
+        taskFailed[taskNumberArray] = true
+    }
+    else {
+        task.removeAttributeNS('class','failed')
+        task.removeAttribute('class')
+        taskFailed[taskNumberArray] = false
+    }
+}
 function removeSubTask(subTaskNumber) {
     console.log(subTaskNumber);
     document.getElementById('subtask-' + subTaskNumber).remove()
@@ -143,4 +185,18 @@ function finishSubTask(subTaskNumber) {
         subTaskFinished[subTaskNumberArray] = false
     }
 }
+function failSubTask(subTaskNumber) {
+    const subTaskNumberArray = subTaskNumber - 1
+    const subTask = document.getElementById('subtask-' + subTaskNumber)
+    if (subTaskFailed[subTaskNumberArray] == false) {
+        subTask.setAttribute('class','failed')
+        subTaskFailed[subTaskNumberArray] = true
+    }
+    else {
+        subTask.removeAttributeNS('class','failed')
+        subTask.removeAttribute('class')
+        subTaskFailed[subTaskNumberArray] = false
+    }
+}
+
 
