@@ -45,7 +45,7 @@ function createTask(task) {
         newRemoveButton.setAttribute('id','remove-button-' + taskCount)
         newRemoveButton.setAttribute('type','button')
         newRemoveButton.setAttribute('onclick','removeTask('+taskCount +')')
-        newRemoveButton.innerText = 'X'
+        newRemoveButton.innerText = 'Remove'
 
         newFinishButton.setAttribute('id','finish-button-' + taskCount)
         newFinishButton.setAttribute('type','button')
@@ -71,7 +71,7 @@ function createTask(task) {
         newRemoveButton.setAttribute('id','remove-button-' + subTaskCount)
         newRemoveButton.setAttribute('type','button')
         newRemoveButton.setAttribute('onclick','removeSubTask('+subTaskCount+')')
-        newRemoveButton.innerText = 'X'
+        newRemoveButton.innerText = 'Remove'
 
         newFinishButton.setAttribute('id','finish-button-' + subTaskCount)
         newFinishButton.setAttribute('type','button')
@@ -92,7 +92,7 @@ function createTask(task) {
             newRemoveButton.setAttribute('id','remove-button-' + subTaskCount)
             newRemoveButton.setAttribute('type','button')
             newRemoveButton.setAttribute('onclick','removeSubTask('+subTaskCount+')')
-            newRemoveButton.innerText = 'X'
+            newRemoveButton.innerText = 'Remove'
     
             newFinishButton.setAttribute('id','finish-button-' + subTaskCount)
             newFinishButton.setAttribute('type','button')

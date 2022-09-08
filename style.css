@@ -2,8 +2,8 @@ li:hover {
     background-color: lightgray;
     
 }
-li button {
-    margin-left: 25px;
+li span{
+    margin-right: 25px;
 }
 .finished {
     text-decoration: line-through;
