@@ -1,15 +1,167 @@
+var countList = 0
+var countTask = 0
+var countButton = 0
+
+class List {
+    constructor(name) {
+        this.id = countList + 1
+        this.name = name
+    }
+}
+class Task {
+
+    constructor(name) {
+        
+        this.id = countTask + 1
+        this.name = name
+        this.status = false
+        this.parent = parentID
+        this.nesting = true
+        this.removeStatus = true
+        this.deadline = false
+        this.edited = false
+
+        createTask(this.name)
+    }  
+
+    createTask(taskName) {
+        const list = document.getElementById('task-list')
+        const newItem = document.createElement('li')
+        const newSpan = document.createElement('span')
+        
+
+        const newIcon = document.createElement('img')
+        newIcon.setAttribute('src','/images/trash.png')
+        newIcon.setAttribute('alt','Remove')
+        newIcon.setAttribute('id','remove-icon')
+
+        const finishChar = '✔️'
+        const failChar = '✖️'
+        const finishStatus = 'finish'
+        const failStatus = 'fail'
+        const progressStatus = 'progress'
+        const noStatus = 'no'
+        
+        const finishSwitch = true
+        const failSwitch = true
+        const progressSwitch = true
+
+    
+        class Button {
+            constructor(typeButton,htmlClass,htmlID) {
+                this.id = countButton + 1 
+                this.type = typeButton
+            }
+            createButton() {
+             var createButton = document.createElement('button')
+            }
+        }
+
+        var removeButton = new Button ('remove') 
+        createButton.setAttribute('id','remove-button-' + removeButton.id)
+        createButton.setAttribute('class','remove-button')
+        createButton.setAttribute('type','button')
+        newItem.appendChild(newRemoveButton)  
+        const removeButtonListener = document.getElementById('fail-button-' + removeButton.id)
+            removeButtonListener.addEventListener('click', () => {
+                removeButtonListener.remove()
+                });
+        
+        
+            
+        newButton.setAttribute('id','fail-button-' + count)
+        newButton.setAttribute('class','fail-button')
+        newButton.setAttribute('type','button')
+        
+        newFailButton.setAttribute('onclick','fail(\''+taskType+'\','+count+',\''+failStatus+'\')') 
+        // finishSwitch = false;
+        
+        failArray[count - 1] = false
+        newFailButton.innerText = failChar 
+    
+        
+        
+        function createFinishButton () {
+            newButton.setAttribute('class','finish-button')
+            newButton.setAttribute('type','button')
+            if (finishSwitch == true) {
+            newButton.setAttribute('onclick','status(\''+taskType+'\','+count+',\''+finishStatus+'\')')
+            finishArray[count - 1] = 'finish'
+            }
+            else if (a== b) {}
+            newFinishButton.innerText = finishChar 
+            newItem.appendChild(newFinishButton) 
+            const failButton = document.getElementById('fail-button-' + taskCount)
+            failButton.addEventListener('click', () => {
+            fail(taskType, count, failStatus)
+                });
+
+            }
+    }
+
+    newSpan.innerText = task
+    
+    newItem.setAttribute('id','task-' + taskCount)
+    newSubItem.setAttribute('class','task')
+        
+    createButtons('task')
+
+    newRemoveButton.appendChild(newIcon)
+    newItem.appendChild(newSpan)
+    
+    list.appendChild(newItem)
+    subListCreated = false
+    
+    
+
+
+    }
+    taskNesting() {
+
+    }
+    taskStatus () {
+
+    }
+    taskSave() {
+
+    }
+    taskLoad () {
+
+    }
+
+// id
+// status  
+// nested
+// remove-status
+// deadline
+// edited    
+}
+
+var task1 = new Task('do this you little cunt')
+console.log(task1)
+var taskString1 = JSON.stringify(task1)
+console.log(taskString1);
+var taskParse1 = JSON.parse(taskString1)
+console.log(taskParse1);
+
 var taskCount = 0
 var subTaskCount = 0
 var subListCreated = false
-var taskFinished = Array(taskCount)
-var subTaskFinished = Array(subTaskCount)
-var taskFailed = Array(taskCount)
-var subTaskFailed = Array(subTaskCount)
+
+var taskFinishArray = Array(taskCount)
+var taskFailArray = Array(taskCount)
+var subTaskFinishArray = Array(subTaskCount)
+var subTaskFailArray = Array(subTaskCount)
 
 
+const addButton = document.getElementById('add-button')
+addButton.addEventListener('click', () => {
+   getTask()
+  });
 
-// const form = document.getElementById('edit-form')
-// form.addEventListener('onsumbit', getTask())
+function buttonClicked () {
+    console.log('clickerino')
+}
 
 function checkboxTicked() {
     var select = document.createElement('select')
@@ -49,39 +201,60 @@ function createTask(task) {
     newIcon.setAttribute('id','remove-icon')
     const finishChar = '✔️'
     const failChar = '✖️'
+    const finishStatus = 'finish'
+    const failStatus = 'fail'
+    const progressStatus = 'progress'
+    const noStatus = 'no'
+    
+    const finishSwitch = true
+    const failSwitch = true
+    const progressSwitch = true
 
-    function createButtons(taskType) {
-        if (taskType == 'task') {
-            count = taskCount
-            functionEnder = 'Task'
-            finishArray = taskFinished
-            failArray = taskFailed
+    function createButtons(buttonType) {
+        
+
+        if (buttonType == 'task') {
+            var count = taskCount
+            var functionEnder = 'Task'
+            var finishArray = taskFinishArray
+            var failArray = taskFailArray
+            var taskType = 'task'
         }
-        else if (taskType == 'subtask') {
-            count = subTaskCount
-            functionEnder = 'SubTask'
-            finishArray = subTaskFinished
-            failArray = subTaskFailed
+        else if (buttonType == 'subtask') {
+            var count = subTaskCount
+            var functionEnder = 'SubTask'
+            var finishArray = subTaskFinishArray
+            var failArray = subTaskFailArray
+            var taskType = 'subtask'
         }
+     
     
         newFinishButton.setAttribute('id','finish-button-' + count)
         newFinishButton.setAttribute('class','finish-button')
         newFinishButton.setAttribute('type','button')
-        newFinishButton.setAttribute('onclick','finish'+functionEnder+'('+count +')')
-        finishArray[count - 1] = false
+        if (finishSwitch == true) {
+        newFinishButton.setAttribute('onclick','status(\''+taskType+'\','+count+',\''+finishStatus+'\')')
+        finishArray[count - 1] = 'finish'
+        }
+        else if (a== b) {}
         newFinishButton.innerText = finishChar 
-    
+
+        
+            
         newFailButton.setAttribute('id','fail-button-' + count)
         newFailButton.setAttribute('class','fail-button')
         newFailButton.setAttribute('type','button')
-        newFailButton.setAttribute('onclick','fail'+functionEnder+'('+count+')')
+        
+        newFailButton.setAttribute('onclick','fail(\''+taskType+'\','+count+',\''+failStatus+'\')') 
+        // finishSwitch = false;
+        
         failArray[count - 1] = false
         newFailButton.innerText = failChar 
     
         newRemoveButton.setAttribute('id','remove-button-' + count)
         newRemoveButton.setAttribute('class','remove-button')
         newRemoveButton.setAttribute('type','button')
-        newRemoveButton.setAttribute('onclick','remove'+functionEnder+'('+count+')')
+        newRemoveButton.setAttribute('onclick','remove(\''+taskType+'\','+count+')')
         
     }
 
@@ -101,6 +274,11 @@ function createTask(task) {
         newItem.appendChild(newFinishButton) 
         list.appendChild(newItem)
         subListCreated = false
+        
+        const failButton = document.getElementById('fail-button-' + taskCount)
+        failButton.addEventListener('click', () => {
+        fail(taskType, count, failStatus)
+        });
 
         
     }
@@ -141,64 +319,89 @@ function createTask(task) {
 
 
 }
-function removeTask(taskNumber) {
-    document.getElementById('task-' + taskNumber).remove()
+function remove(taskType, taskNumber) {
+    if (taskType == 'task') {
+        document.getElementById('task-' + taskNumber).remove()
+    }
+    else if (taskType == 'subtask') {
+        document.getElementById('subtask-' + taskNumber).remove()
+    }
 }
-function finishTask(taskNumber) {
-    const taskNumberArray = taskNumber - 1
-    const task = document.getElementById('task-' + taskNumber)
-    if (taskFinished[taskNumberArray] == false) {
+
+function taskStatus(taskType, taskNumber, statusType) {
+    if (taskType == 'task') {
+        var count = taskCount
+        var statusArray = taskStatusArray
+        var idTag = 'task-'
+    }
+    else if (taskType == 'subtask') {
+        var count = subTaskCount        
+        var statusArray = subTaskStatusArray
+        var idTag = 'subtask-'
+    }
+    const numberArray = taskNumber - 1
+    const task = document.getElementById(idTag + taskNumber)
+    if (statusArray[numberArray] == 'finished') {
         task.setAttribute('class','finished')
-        taskFinished[taskNumberArray] = true
+    }
+    else if (statusArray[numberArray] == 'failed') {
+        task.setAttribute('class','failed')
+    }
+    // else if (statusArray[numberArray] == 'progress') {
+    //     task.setAttribute('class','progress')
+    // }
+    else if (statusArray[numberArray] == false){
+        task.removeAttribute('class')
+    }
+
+}
+
+function finish(taskType, taskNumber) {
+    if (taskType == 'task') {
+        var count = taskCount
+        var finishArray = taskFinishArray
+        var idTag = 'task-'
+    }
+    else if (taskType == 'subtask') {
+        var count = subTaskCount        
+        var finishArray = subTaskFinishArray
+        var idTag = 'subtask-'
+    }
+    const numberArray = taskNumber - 1
+    const task = document.getElementById(idTag + taskNumber)
+    if (finishArray[numberArray] == false) {
+        task.setAttribute('class','finished')
+        finishArray[numberArray] = true
     }
     else {
         task.removeAttributeNS('class','finished')
         task.removeAttribute('class')
-        taskFinished[taskNumberArray] = false
+        finishArray[numberArray] = false
     }
 }
-function failTask(taskNumber) {
-    const taskNumberArray = taskNumber - 1
-    const task = document.getElementById('task-' + taskNumber)
-    if (taskFailed[taskNumberArray] == false) {
+
+
+function fail(taskType, taskNumber) {
+    if (taskType == 'task') {
+        var count = taskCount
+        var failArray = taskFailArray
+        var idTag = 'task-'
+    }
+    else if (taskType == 'subtask') {
+        var count = subTaskCount        
+        var failArray = subTaskFailArray
+        var idTag = 'subtask-'
+    }
+    const numberArray = taskNumber - 1
+    const task = document.getElementById(idTag + taskNumber)
+    if (failArray[numberArray] == false) {
         task.setAttribute('class','failed')
-        taskFailed[taskNumberArray] = true
+        failArray[numberArray] = true
     }
     else {
         task.removeAttributeNS('class','failed')
         task.removeAttribute('class')
-        taskFailed[taskNumberArray] = false
+        failArray[numberArray] = false
     }
 }
-function removeSubTask(subTaskNumber) {
-    console.log(subTaskNumber);
-    document.getElementById('subtask-' + subTaskNumber).remove()
-}
-function finishSubTask(subTaskNumber) {
-    const subTaskNumberArray = subTaskNumber - 1
-    const subTask = document.getElementById('subtask-' + subTaskNumber)
-    if (subTaskFinished[subTaskNumberArray] == false) {
-        subTask.setAttribute('class','finished')
-        subTaskFinished[subTaskNumberArray] = true
-    }
-    else {
-        subTask.removeAttributeNS('class','finished')
-        subTask.removeAttribute('class')
-        subTaskFinished[subTaskNumberArray] = false
-    }
-}
-function failSubTask(subTaskNumber) {
-    const subTaskNumberArray = subTaskNumber - 1
-    const subTask = document.getElementById('subtask-' + subTaskNumber)
-    if (subTaskFailed[subTaskNumberArray] == false) {
-        subTask.setAttribute('class','failed')
-        subTaskFailed[subTaskNumberArray] = true
-    }
-    else {
-        subTask.removeAttributeNS('class','failed')
-        subTask.removeAttribute('class')
-        subTaskFailed[subTaskNumberArray] = false
-    }
-}
-
 
