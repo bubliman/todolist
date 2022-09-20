@@ -1,462 +1,297 @@
-var countList = 0
-var countTask = 0
-var countButton = 0
-var countStatus = 0
 
-class List {
-    constructor(name) {
-        this.id = countList + 1
-        this.name = name
+ class Model {
+    static idCountTask = 0
+    constructor() {
+      // this.list = JSON.parse(localStorage.getItem('list')) || []
+      this.list = new Array()
+      this.list.forEach((element) => {
+        if (element.id > Model.idCountTask) {
+          Model.idCountTask = element.id
+        }
+      })
     }
-}
-class Task {
+  
+    bindTaskListChanged(callback) {
+      this.onTaskListChanged = callback
+    }
+  
+    _commit(list) {
+      this.onTaskListChanged(list)
+      localStorage.setItem('list', JSON.stringify(list))
+    }
+  
+    addTask(todoText) {
+     
+      const task = new ModelTask(todoText)
+      // const task = {
+      //   id: ++Model.idCountTask,
+      //   text: todoText,
+      //   complete: false,
+      //   schedule: false,
+      // }
 
-    constructor(name, parentID) {
-        
-        this.id = countTask + 1
-        this.name = name
-        this.status = false
-        this.parent = parentID
-        this.nesting = true
-        this.removeStatus = true
-        this.deadline = false
-        this.edited = false
-
-        createTask(this.name)
+      this.list.push(task)
+      this._commit(this.list)
+    }
+  
+    editTask(id, updatedText) {
+      let task = this.list.find(element => element.id === id)
+      task.editModelTask(id, updatedText)
+  
+      this._commit(this.list)
+    }
+  
+    deleteTask(id) {
+      let task = this.list.find(element => element.id === id)
+      task.deleteModelTask(id)
+  
+      this._commit(this.list)
+    }
+  
+    toggleTask(id) {
+      this.list = this.list.map(task => ModelTask.toggleModelTask(id))
+  
+      this._commit(this.list)
     }  
 
-    createTask(taskName) {
-        const list = document.getElementById('task-list')
-        const newItem = document.createElement('li')
-        const newSpan = document.createElement('span')
-        
+    // scheduleTask(id, days) {
+    //   var currentDate = Date()
+    //   this.list = this.list.map(task =>
+    //     task.id === id ? { id: task.id, text: task.text, complete: task.complete, schedule: currentDate.getDate() + days} : task
+    //     )
+    //     this._commit(this.list)
+    //   }
+  }
+  class ModelTask {
+    constructor(todoText) {
+      this.id =  ++Model.idCountTask
+      this.text = todoText
+      this.status = none
+      this.schedule = false
 
-        const newIcon = document.createElement('img')
-        newIcon.setAttribute('src','/images/trash.png')
-        newIcon.setAttribute('alt','Remove')
-        newIcon.setAttribute('id','remove-icon')
-
-        const finishChar = '✔️'
-        const failChar = '✖️'
-        const finishStatus = 'finish'
-        const failStatus = 'fail'
-        const progressStatus = 'progress'
-        const noStatus = 'no'
-        
-        const finishSwitch = true
-        const failSwitch = true
-        const progressSwitch = true
-
-    
-        class Button {
-            constructor(typeButton, parentID) {
-                this.id = countButton + 1 
-                this.type = typeButton
-                this.parent = parentID
-            }
-            createButton() {
-                var createButton = document.createElement('button')
-                createButton.setAttribute('id',this.type + '-button-' + this.id)
-                createButton.setAttribute('class',this.type + '-button')
-                createButton.setAttribute('class','button')
-                createButton.setAttribute('type','button')
-                newItem.appendChild(createButton)  
-            }
-            createButtonListener() {
-                const buttonListener = document.getElementById(this.type + '-button-' + this.id)
-                buttonListener.addEventListener('click', () => {
-                buttonListener.buttonFunction()
-                })
-            }
-            buttonFunction() {
-                if (this.type == 'remove') {
-                    
-                }
-                if (this.type == 'status') {
-
-                    class Status {
-                        constructor() {
-                        this.id = countStatus + 1 
-                        this.type = typeButton
-                        this.parent = parentID
-                        }
-                    }
-                }
-            }
-        }
-        function statusButton (statusType) {
-             taskType, taskNumber, 
-//     if (taskType == 'task') {
-//         var count = taskCount
-//         var statusArray = taskStatusArray
-//         var idTag = 'task-'
-//     }
-//     else if (taskType == 'subtask') {
-//         var count = subTaskCount        
-//         var statusArray = subTaskStatusArray
-//         var idTag = 'subtask-'
-//     }
-//     const numberArray = taskNumber - 1
-//     const task = document.getElementById(idTag + taskNumber)
-//     if (statusArray[numberArray] == 'finished') {
-//         task.setAttribute('class','finished')
-//     }
-//     else if (statusArray[numberArray] == 'failed') {
-//         task.setAttribute('class','failed')
-//     }
-//     // else if (statusArray[numberArray] == 'progress') {
-//     //     task.setAttribute('class','progress')
-//     // }
-//     else if (statusArray[numberArray] == false){
-//         task.removeAttribute('class')
-//     }
-
-// }
-        }
-
-        var removeButton = new Button ('remove', newTask.id) 
-        removeButton.createButton()
-        removeButton.createButtonListener()
-
-
-
-        
-        
-        
-            
-        // newButton.setAttribute('id','fail-button-' + count)
-        // newButton.setAttribute('class','fail-button')
-        // newButton.setAttribute('type','button')
-        
-        // newFailButton.setAttribute('onclick','fail(\''+taskType+'\','+count+',\''+failStatus+'\')') 
-        // // finishSwitch = false;
-        
-        // failArray[count - 1] = false
-        // newFailButton.innerText = failChar 
-    
-        
-        
-        // function createFinishButton () {
-        //     newButton.setAttribute('class','finish-button')
-        //     newButton.setAttribute('type','button')
-        //     if (finishSwitch == true) {
-        //     newButton.setAttribute('onclick','status(\''+taskType+'\','+count+',\''+finishStatus+'\')')
-        //     finishArray[count - 1] = 'finish'
-        //     }
-        //     else if (a== b) {}
-        //     newFinishButton.innerText = finishChar 
-        //     newItem.appendChild(newFinishButton) 
-        //     const failButton = document.getElementById('fail-button-' + taskCount)
-        //     failButton.addEventListener('click', () => {
-        //     fail(taskType, count, failStatus)
-        //         });
-
-        //     }
-    
-
-    newSpan.innerText = task
-    
-    newItem.setAttribute('id','task-' + taskCount)
-    newSubItem.setAttribute('class','task')
-        
-    createButtons('task')
-
-    newRemoveButton.appendChild(newIcon)
-    newItem.appendChild(newSpan)
-    
-    list.appendChild(newItem)
-    subListCreated = false
-    
-    
-
-
+      let none = 
     }
-    taskNesting() {
-
-    }
-    taskStatus () {
-
-    }
-    taskSave() {
-
-    }
-    taskLoad () {
-
-    }
-
-// id
-// status  
-// nested
-// remove-status
-// deadline
-// edited    
-}
-
-// var task1 = new Task('do this you little cunt')
-// console.log(task1)
-// var taskString1 = JSON.stringify(task1)
-// console.log(taskString1);
-// var taskParse1 = JSON.parse(taskString1)
-// console.log(taskParse1);
-
-// var taskCount = 0
-// var subTaskCount = 0
-// var subListCreated = false
-
-// var taskFinishArray = Array(taskCount)
-// var taskFailArray = Array(taskCount)
-// var subTaskFinishArray = Array(subTaskCount)
-// var subTaskFailArray = Array(subTaskCount)
-
-
-// const addButton = document.getElementById('add-button')
-// addButton.addEventListener('click', () => {
-//    getTask()
-//   });
-
-// function buttonClicked () {
-//     console.log('clickerino')
-// }
-
-// function checkboxTicked() {
-//     var select = document.createElement('select')
-//     var option = document.createElement('option')
-//     select.appendChild(option)
-//     document.body.appendChild(select)
-
-// }
-// function getTask() {
-//     var taskInput = document.getElementById('task-input')
-//     if (taskInput.value!='') {
-//     createTask(taskInput.value)
-//     }
-//     // else{
-//     //     alert('we do not allow empty tasks')
-//     // }
-//     taskInput.value = ''
-// }
-
-
-// function createTask(task) {
-
-//     var checkboxSubTask = document.getElementById('checkbox-subtask')
-//     const list = document.getElementById('task-list')
-
-//     const newItem = document.createElement('li')
-//     const newSubList = document.createElement('ul')
-//     const newSubItem = document.createElement('li')
-//     const newSpan = document.createElement('span')
-//     const newRemoveButton = document.createElement('button')
-//     const newFinishButton = document.createElement('button')
-//     const newFailButton = document.createElement('button')
-
-//     const newIcon = document.createElement('img')
-//     newIcon.setAttribute('src','/images/trash.png')
-//     newIcon.setAttribute('alt','Remove')
-//     newIcon.setAttribute('id','remove-icon')
-//     const finishChar = '✔️'
-//     const failChar = '✖️'
-//     const finishStatus = 'finish'
-//     const failStatus = 'fail'
-//     const progressStatus = 'progress'
-//     const noStatus = 'no'
-    
-//     const finishSwitch = true
-//     const failSwitch = true
-//     const progressSwitch = true
-
-//     function createButtons(buttonType) {
-        
-
-//         if (buttonType == 'task') {
-//             var count = taskCount
-//             var functionEnder = 'Task'
-//             var finishArray = taskFinishArray
-//             var failArray = taskFailArray
-//             var taskType = 'task'
-//         }
-    //     else if (buttonType == 'subtask') {
-    //         var count = subTaskCount
-    //         var functionEnder = 'SubTask'
-    //         var finishArray = subTaskFinishArray
-    //         var failArray = subTaskFailArray
-    //         var taskType = 'subtask'
-    //     }
+    addModelTask(todoText) {
      
-    
-    //     newFinishButton.setAttribute('id','finish-button-' + count)
-    //     newFinishButton.setAttribute('class','finish-button')
-    //     newFinishButton.setAttribute('type','button')
-    //     if (finishSwitch == true) {
-    //     newFinishButton.setAttribute('onclick','status(\''+taskType+'\','+count+',\''+finishStatus+'\')')
-    //     finishArray[count - 1] = 'finish'
-    //     }
-    //     else if (a== b) {}
-    //     newFinishButton.innerText = finishChar 
+      const task = new Task (todoText)
+      console.log(task);
+      
 
-        
-            
-    //     newFailButton.setAttribute('id','fail-button-' + count)
-    //     newFailButton.setAttribute('class','fail-button')
-    //     newFailButton.setAttribute('type','button')
-        
-    //     newFailButton.setAttribute('onclick','fail(\''+taskType+'\','+count+',\''+failStatus+'\')') 
-    //     // finishSwitch = false;
-        
-    //     failArray[count - 1] = false
-    //     newFailButton.innerText = failChar 
-    
-    //     newRemoveButton.setAttribute('id','remove-button-' + count)
-    //     newRemoveButton.setAttribute('class','remove-button')
-    //     newRemoveButton.setAttribute('type','button')
-    //     newRemoveButton.setAttribute('onclick','remove(\''+taskType+'\','+count+')')
-        
+      this.list.push(task)
+      this._commit(this.list)
+    }
+  
+    editModelTask(id, updatedText) {
+      this.id === id ? this.text = updatedText : this.text
+    }
+  
+    deleteModelTask(id) {
+      this.id === id ? this 
+    }
+  
+    toggleModelTask(id) {
+      this.id === id ? !this.complete : this/
+  
+      this._commit(this.list)
+    }
+  
+
+    // scheduleModelTask(id, days) {
+
+    //   }
+  }
+  
+
+  class View {
+    constructor() {
+      this.app = this.getElement('#root')
+      this.form = this.createElement('form')
+      this.input = this.createElement('input')
+      this.input.type = 'text'
+      this.input.placeholder = 'Add task'
+      this.input.name = 'task'
+      this.submitButton = this.createElement('button')
+      this.submitButton.textContent = 'Submit'
+      this.form.append(this.input, this.submitButton)
+      this.title = this.createElement('h1')
+      this.title.textContent = 'Tasks'
+      this.todoList = this.createElement('ul', 'task-list')
+      this.app.append(this.title, this.form, this.todoList)
+  
+      this._temporaryTaskText = ''
+      this._initLocalListeners()
+    }
+  
+    get _todoText() {
+      return this.input.value
+    }
+  
+    _resetInput() {
+      this.input.value = ''
+    }
+  
+    createElement(tag, className) {
+      const element = document.createElement(tag)
+  
+      if (className) element.classList.add(className)
+  
+      return element
+    }
+  
+    getElement(selector) {
+      const element = document.querySelector(selector)
+  
+      return element
+    }
+  
+    displayTasks(list) {
+      // Delete all nodes
+      while (this.todoList.firstChild) {
+        this.todoList.removeChild(this.todoList.firstChild)
+      }
+  
+      // Show default message
+      if (list.length === 0) {
+        const p = this.createElement('p')
+        p.textContent = 'Nothing to do! Add a task?'
+        this.todoList.append(p)
+      } else {
+        // Create nodes
+        list.forEach(task => {
+          const li = this.createElement('li')
+          li.id = task.id
+  
+          const checkbox = this.createElement('input')
+          checkbox.type = 'checkbox'
+          checkbox.checked = task.complete
+  
+          const span = this.createElement('span')
+          span.contentEditable = true
+          span.classList.add('editable')
+  
+          if (task.complete) {
+            const strike = this.createElement('s')
+            strike.textContent = task.text
+            span.append(strike)
+          } else {
+            span.textContent = task.text
+          }
+          
+          const todayButton = this.createElement('button', 'today')
+          todayButton.textContent = 'Today'
+          const tommorowButton = this.createElement('button', 'tommorow')
+          tommorowButton.textContent = 'Tommorow'
+
+          const deleteButton = this.createElement('button', 'delete')
+          deleteButton.textContent = 'Delete'
+          li.append(checkbox, span, deleteButton, tommorowButton, todayButton)
+  
+          // Append nodes
+          this.todoList.append(li)
+        })
+      }
+  
+      // Debugging
+      console.log(list)
+    }
+  
+    _initLocalListeners() {
+      this.todoList.addEventListener('input', event => {
+        if (event.target.className === 'editable') {
+          this._temporaryTaskText = event.target.innerText
+        }
+      })
+    }
+  
+    bindAddTask(handler) {
+      this.form.addEventListener('submit', event => {
+        event.preventDefault()
+  
+        if (this._todoText) {
+          handler(this._todoText)
+          this._resetInput()
+        }
+      })
+    }
+  
+    bindDeleteTask(handler) {
+      this.todoList.addEventListener('click', event => {
+        if (event.target.className === 'delete') {
+          const id = parseInt(event.target.parentElement.id)
+  
+          handler(id)
+        }
+      })
+    }
+  
+    bindEditTask(handler) {
+      this.todoList.addEventListener('focusout', event => {
+        if (this._temporaryTaskText) {
+          const id = parseInt(event.target.parentElement.id)
+  
+          handler(id, this._temporaryTaskText)
+          this._temporaryTaskText = ''
+        }
+      })
+    }
+  
+    bindToggleTask(handler) {
+      this.todoList.addEventListener('change', event => {
+        if (event.target.type === 'checkbox') {
+          const id = parseInt(event.target.parentElement.id)
+  
+          handler(id)
+        }
+      })
+    }
+
+    bindScheduleTodayTask(handler) {
+      this.todoList.addEventListener('click', event => {
+        if (event.target.className === 'today') {
+          const id = parseInt(event.target.parentElement.id)
+  
+          handler(id)
+        }
+      })
+    }
+  }
+  
+  class Controller {
+    constructor(model, view) {
+      this.model = model
+      this.view = view
+  
+      // Explicit this binding
+      this.model.bindTaskListChanged(this.onTaskListChanged)
+      this.view.bindAddTask(this.handleAddTask)
+      this.view.bindEditTask(this.handleEditTask)
+      this.view.bindDeleteTask(this.handleDeleteTask)
+      this.view.bindToggleTask(this.handleToggleTask)
+      // this.view.bindScheduleTodayTask(this.handleScheduleTodayTask)
+
+      // Display initial list
+      this.onTaskListChanged(this.model.list)
+    }
+    onTaskListChanged = list => {
+      this.view.displayTasks(list)
+    }
+    handleAddTask = todoText => {
+      this.model.addTask(todoText)
+    }
+    handleEditTask = (id, todoText) => {
+      this.model.editTask(id, todoText)
+    }
+    handleDeleteTask = id => {
+      this.model.deleteTask(id)
+    }
+    handleToggleTask = id => {
+      this.model.toggleTask(id)
+    }
+    // handleScheduleTodayTask = id => {
+    //   this.model.scheduleTodayTask(id)
     // }
+  }
+  
+  const app = new Controller(new Model(), new View())
 
-    // newSpan.innerText = task
-    
-    // if (checkboxSubTask.checked == false) {
-    //     taskCount = taskCount + 1
-    //     newItem.setAttribute('id','task-' + taskCount)
-    //     newSubItem.setAttribute('class','task')
-        
-    //     createButtons('task')
-
-    //     newRemoveButton.appendChild(newIcon)
-    //     newItem.appendChild(newSpan)
-    //     newItem.appendChild(newRemoveButton)  
-    //     newItem.appendChild(newFailButton) 
-    //     newItem.appendChild(newFinishButton) 
-    //     list.appendChild(newItem)
-    //     subListCreated = false
-        
-    //     const failButton = document.getElementById('fail-button-' + taskCount)
-    //     failButton.addEventListener('click', () => {
-    //     fail(taskType, count, failStatus)
-    //     });
-
-        
-    // }
-    // else
-    // {
-    //     subTaskCount = subTaskCount + 1
-    //     const subTaskList = document.getElementById('subtask-list' + taskCount)
-
-    //     createButtons('subtask')
-
-//         if (subListCreated == false) {
-//         newSubList.setAttribute('id','subtask-list' + taskCount)
-//         newSubItem.setAttribute('id','subtask-' + subTaskCount)
-//         newSubItem.setAttribute('class','subtask')
-
-//         newRemoveButton.appendChild(newIcon)
-//         newSubItem.appendChild(newSpan)
-//         newSubItem.appendChild(newRemoveButton) 
-//         newSubItem.appendChild(newFailButton) 
-//         newSubItem.appendChild(newFinishButton)
-//         newSubList.appendChild(newSubItem)
-//         list.appendChild(newSubList)
-//         subListCreated = true 
-//         }
-//         else{
-//             newSubItem.setAttribute('id','subtask-' + subTaskCount)
-//             newSubItem.setAttribute('class','subtask')
-
-//             newRemoveButton.appendChild(newIcon)
-//             newSubItem.appendChild(newSpan)
-//             newSubItem.appendChild(newRemoveButton) 
-//             newSubItem.appendChild(newFailButton) 
-//             newSubItem.appendChild(newFinishButton)
-//             subTaskList.appendChild(newSubItem)
-//         }
-
-//     }
-
-
-// }
-// function remove(taskType, taskNumber) {
-//     if (taskType == 'task') {
-//         document.getElementById('task-' + taskNumber).remove()
-//     }
-//     else if (taskType == 'subtask') {
-//         document.getElementById('subtask-' + taskNumber).remove()
-//     }
-// }
-
-// function taskStatus(taskType, taskNumber, statusType) {
-//     if (taskType == 'task') {
-//         var count = taskCount
-//         var statusArray = taskStatusArray
-//         var idTag = 'task-'
-//     }
-//     else if (taskType == 'subtask') {
-//         var count = subTaskCount        
-//         var statusArray = subTaskStatusArray
-//         var idTag = 'subtask-'
-//     }
-//     const numberArray = taskNumber - 1
-//     const task = document.getElementById(idTag + taskNumber)
-//     if (statusArray[numberArray] == 'finished') {
-//         task.setAttribute('class','finished')
-//     }
-//     else if (statusArray[numberArray] == 'failed') {
-//         task.setAttribute('class','failed')
-//     }
-//     // else if (statusArray[numberArray] == 'progress') {
-//     //     task.setAttribute('class','progress')
-//     // }
-//     else if (statusArray[numberArray] == false){
-//         task.removeAttribute('class')
-//     }
-
-// }
-
-// function finish(taskType, taskNumber) {
-//     if (taskType == 'task') {
-//         var count = taskCount
-//         var finishArray = taskFinishArray
-//         var idTag = 'task-'
-//     }
-//     else if (taskType == 'subtask') {
-//         var count = subTaskCount        
-//         var finishArray = subTaskFinishArray
-//         var idTag = 'subtask-'
-//     }
-//     const numberArray = taskNumber - 1
-//     const task = document.getElementById(idTag + taskNumber)
-//     if (finishArray[numberArray] == false) {
-//         task.setAttribute('class','finished')
-//         finishArray[numberArray] = true
-//     }
-//     else {
-//         task.removeAttributeNS('class','finished')
-//         task.removeAttribute('class')
-//         finishArray[numberArray] = false
-//     }
-// }
-
-
-// function fail(taskType, taskNumber) {
-//     if (taskType == 'task') {
-//         var count = taskCount
-//         var failArray = taskFailArray
-//         var idTag = 'task-'
-//     }
-//     else if (taskType == 'subtask') {
-//         var count = subTaskCount        
-//         var failArray = subTaskFailArray
-//         var idTag = 'subtask-'
-//     }
-//     const numberArray = taskNumber - 1
-//     const task = document.getElementById(idTag + taskNumber)
-//     if (failArray[numberArray] == false) {
-//         task.setAttribute('class','failed')
-//         failArray[numberArray] = true
-//     }
-//     else {
-//         task.removeAttributeNS('class','failed')
-//         task.removeAttribute('class')
-//         failArray[numberArray] = false
-//     }
-// }
-
+ 
