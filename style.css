@@ -1,3 +1,7 @@
+body {
+    max-width: 900px;
+    margin: auto
+}
 li button {
     visibility: hidden;
 }
@@ -11,7 +15,7 @@ li button {
     float:right;
 }
 li {
-    height:25px;
+    /* height:25px; */
     vertical-align: center;
 }
 
@@ -71,3 +75,26 @@ li span{
     border: 2px solid rgb(green);
 
 } */
+
+
+.task-list {
+    font-size: 25px;
+    list-style: none;
+}
+.finish-list {
+    background: rgba(61, 236, 0, 1);
+    border-radius: 20px;
+}
+.remove-list {
+    background-color: #DDD;
+    border-radius: 50px;
+
+}
+input {
+    border-radius: 50px;
+}
+.bottom-list button {
+    height: 10px;
+    font-size: 8px;
+    vertical-align: auto;
+}
