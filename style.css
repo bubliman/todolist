@@ -2,11 +2,18 @@ body {
     max-width: 900px;
     margin: auto
 }
+#root {
+    background-color: beige;
+    padding:50px;
+    margin-top:20px;
+    border-radius: 50px;
+}
 li button {
     visibility: hidden;
 }
 li:hover {
-    background-color: #DDD;    
+    background-color: rgba(25,25,25,0.2);    
+    border-radius: 5px;
 }
 li:hover button {
     visibility: visible;
@@ -81,20 +88,23 @@ li span{
     font-size: 25px;
     list-style: none;
 }
-.finish-list {
+.bottom-list {
     background: rgba(61, 236, 0, 1);
     border-radius: 20px;
 }
 .remove-list {
     background-color: #DDD;
-    border-radius: 50px;
+    border-radius: 20px;
 
 }
 input {
     border-radius: 50px;
 }
-.bottom-list button {
-    height: 10px;
-    font-size: 8px;
-    vertical-align: auto;
+.bottom-list li{
+    height: 23px;
+    
+}
+form {
+    margin-top: 50px;
+    margin-bottom:50px;
 }
