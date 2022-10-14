@@ -1,67 +1,84 @@
  class Model {
     static idCountTask = 0
+    static finishCount = 0
+    static removeCount = 0
+    static taskCount = 0
     constructor() {
       this.list = JSON.parse(localStorage.getItem('list')) || []
+      console.table(this.list)
       // this.list = new Array()
       this.list.forEach((element) => {
         if (element.id > Model.idCountTask) {
           Model.idCountTask = element.id
         }
+        if (element.status == ModelTask.statusFinish) {
+          ++Model.finishCount
+        }
+        if (element.status == ModelTask.statusRemove) {
+          ++Model.removeCount
+        }
+        if (element.status == ModelTask.statusNone) {
+          ++Model.taskCount
+        }
+        Model.reloadTask(element.id, element.text, element.status)
       })
-    //   this.list[0] = {
-    //     id: ++Model.idCountTask,
-    //     text: 'finished task example 1',
-    //     status: ModelTask.statusFinish,
-    //     schedule: false,
-    //   }
-    //   this.list[1] = {
-    //     id: ++Model.idCountTask,
-    //     text: 'finished task example 2',
-    //     status: ModelTask.statusFinish,
-    //     schedule: false,
-    //   }
-    //   this.list[2] = {
-    //     id: ++Model.idCountTask,
-    //     text: 'finished task example 3',
-    //     status: ModelTask.statusFinish,
-    //     schedule: false,
-    //   }
-    //   this.list[3] = {
-    //     id: ++Model.idCountTask,
-    //     text: 'task example 1',
-    //     status: ModelTask.statusNone,
-    //     schedule: false,
-    //   }
-    //   this.list[4] = {
-    //     id: ++Model.idCountTask,
-    //     text: 'task example 2',
-    //     status: ModelTask.statusNone,
-    //     schedule: false,
-    //   }
-    //   this.list[5] = {
-    //     id: ++Model.idCountTask,
-    //     text: 'task example 3',
-    //     status: ModelTask.statusNone,
-    //     schedule: false,
-    //   }
-    //   this.list[6] = {
-    //     id: ++Model.idCountTask,
-    //     text: 'removed task example 1',
-    //     status: ModelTask.statusRemove,
-    //     schedule: false,
-    //   }
-    //   this.list[7] = {
-    //     id: ++Model.idCountTask,
-    //     text: 'removed task example 2',
-    //     status: ModelTask.statusRemove,
-    //     schedule: false,
-    //   }
-    //   this.list[8] = {
-    //     id: ++Model.idCountTask,
-    //     text: 'removed task example 3',
-    //     status: ModelTask.statusRemove,
-    //     schedule: false,
-    //   }
+      // this.list[0] = {
+      //   id: ++Model.idCountTask,
+      //   text: 'finished task example 1',
+      //   status: ModelTask.statusFinish,
+      //   schedule: false,
+      // }
+      // this.list[1] = { 
+      //   id: ++Model.idCountTask,
+      //   text: 'finished task example 2',
+      //   status: ModelTask.statusFinish,
+      //   schedule: false,
+      // }
+      // this.list[2] = {
+      //   id: ++Model.idCountTask,
+      //   text: 'finished task example 3',
+      //   status: ModelTask.statusFinish,
+      //   schedule: false,
+      // }
+      // this.list[3] = {
+      //   id: ++Model.idCountTask,
+      //   text: 'task example 1',
+      //   status: ModelTask.statusNone,
+      //   schedule: false,
+      // }
+      // this.list[4] = {
+      //   id: ++Model.idCountTask,
+      //   text: 'task example 2',
+      //   status: ModelTask.statusNone,
+      //   schedule: false,
+      // }
+      // this.list[5] = {
+      //   id: ++Model.idCountTask,
+      //   text: 'task example 3',
+      //   status: ModelTask.statusNone,
+      //   schedule: false,
+      // }
+      // this.list[6] = {
+      //   id: ++Model.idCountTask,
+      //   text: 'removed task example 1',
+      //   status: ModelTask.statusRemove,
+      //   schedule: false,
+      // }
+      // this.list[7] = {
+      //   id: ++Model.idCountTask,
+      //   text: 'removed task example 2',
+      //   status: ModelTask.statusRemove,
+      //   schedule: false,
+      // }
+      // this.list[8] = {
+      //   id: ++Model.idCountTask,
+      //   text: 'removed task example 3',
+      //   status: ModelTask.statusRemove,
+      //   schedule: false,
+      // }
+      // Model.taskCount = 3
+      // Model.finishCount = 3
+      // Model.removeCount = 3
     }
   
     bindTaskListChanged(callback) {
@@ -72,16 +89,11 @@
       this.onTaskListChanged(list)
       localStorage.setItem('list', JSON.stringify(list))
     }
+
   
-    addTask(todoText) {
+    addTask(text) {
      
-      const task = new ModelTask(todoText)
-      // const task = {
-      //   id: ++Model.idCountTask,
-      //   text: todoText,
-      //   complete: false,
-      //   schedule: false,
-      // }
+      const task = new ModelTask(text)
 
       this.list.push(task)
       this._commit(this.list)
@@ -104,14 +116,14 @@
     recoverTask(id) {
       let task = this.list.find(element => element.id === id)
       task.recoverModelTask(id)
-  
+
+      
       this._commit(this.list)
     }  
   
     finishTask(id) {
       let task = this.list.find(element => element.id === id)
       task.finishModelTask(id)
-  
       this._commit(this.list)
     }  
 
@@ -128,21 +140,13 @@
     static statusFinish = 1
     static statusRemove = 2
 
-    constructor(todoText) {
+    constructor(text) {
       this.id =  ++Model.idCountTask
-      this.text = todoText
+      this.text = text
       this.status = ModelTask.statusNone
-      this.schedule = false    
+      ++Model.taskCount
     }
-    addModelTask(todoText) {
-     
-      const task = new Task (todoText)
-      console.log(task);
-      
-
-      this.list.push(task)
-      this._commit(this.list)
-    }
+    
   
     editModelTask(id, updatedText) {
       this.id === id ? this.text = updatedText : this.text
@@ -150,14 +154,29 @@
   
     removeModelTask(id) {
       this.id === id ? this.status = ModelTask.statusRemove : this.status
+      ++Model.removeCount
+      Model.taskCount--
     }
     
     recoverModelTask(id) {
-      this.id === id ? this.status = ModelTask.statusNone : this.status
+      if (this.id === id) {
+        if (this.status == ModelTask.statusFinish) {
+          Model.finishCount--
+          ++Model.taskCount
+        }
+        if (this.status == ModelTask.statusRemove) {
+          Model.removeCount--
+          ++Model.taskCount
+        }
+        this.status = ModelTask.statusNone 
+      }
+
     }
 
     finishModelTask(id) {
       this.id === id ? this.status = ModelTask.statusFinish : this.status
+      ++Model.finishCount
+      Model.taskCount--
     }
   
 
@@ -165,7 +184,7 @@
 
     //   }
   }
-  
+
 
   class View {
     // construct the initial View
@@ -178,7 +197,7 @@
 
         // create a form
         this.form = this.createElement('form')
-        this.form.classList.add('task-list')
+        this.form.classList.add('task-list-form')
 
         // create input for entering new tasks inside of the form
         this.input = this.createElement('input')
@@ -204,27 +223,32 @@
             this.h1 = this.createElement('h1')
             // add atributes to the title
             this.h1.textContent = 'Tasks'
-            // create a h4 title
-            const h4 = this.createElement('h4')
-            // add atributes to the finish-title
-            h4.textContent = 'Finished tasks'
-            this.h4finish = h4.textContent
-            // add atributes to the remove-title
-            h4.textContent = 'Removed tasks'
-            this.h4remove = h4.textContent 
+            // create a h4 finish title
+            this.h4finish = this.createElement('h4')
+              // add atributes to the finish-title
+              
+           
 
       // append the task input and submit button to the form
       this.form.append(this.input, this.submitButton)
 
-      // append the h4 titles to the bottom lists
-      const span = this.createElement('span')
-      span.append(this.h4finish, this.finishList, this.h4remove, this.removeList)
-      this.bottomLists = span
-      this.bottomLists.classList.add('bottom-list')
-      
+      // create and append finish list to a container
+      this.finishListContainer = this.createElement('div')
+      this.finishListContainer.classList.add('bottom-list')
+      this.finishListContainer.classList.add('finish-list-container')
+      this.finishListContainer.append(this.h4finish, this.finishList)
+           // create a h4 remove title
+           this.h4remove = this.createElement('h4')
+           // add atributes to the remove-title
+           
+      // create and append remove list to a container
+      this.removeListContainer = this.createElement('div')
+      this.removeListContainer.classList.add('bottom-list')
+      this.removeListContainer.classList.add('remove-list-container')
+      this.removeListContainer.append(this.h4remove, this.removeList)
 
       // append title, task-list, form, finish-list and remove-list to the app
-      this.app.append(this.h1, this.taskList, this.form, this.bottomLists)
+      this.app.append(this.h1, this.taskList, this.form, this.finishListContainer, this.removeListContainer)
       
       
       this._temporaryTaskText = ''
@@ -254,6 +278,12 @@
     }
   
     displayTasks(list) {
+      if (Model.finishCount == 0) {this.h4finish.textContent = ''}
+      else {this.h4finish.textContent = 'Finished tasks ' + Model.finishCount}
+      if (Model.removeCount == 0) {this.h4remove.textContent = ''}
+      else {this.h4remove.textContent = 'Removed tasks ' + Model.removeCount}
+      // this.h4remove.textContent = 'Removed tasks ' + Model.removeCount
+
       // Delete all nodes
       while (this.taskList.firstChild) {
         this.taskList.removeChild(this.taskList.firstChild)
@@ -264,7 +294,8 @@
       while (this.removeList.firstChild) {
         this.removeList.removeChild(this.removeList.firstChild)
       }
-  
+      
+      
       // Show default message
       if (list.length === 0) {
         const p = this.createElement('p')
@@ -333,6 +364,11 @@
             this.removeList.append(li)
             }  
         })
+      }
+      if (Model.taskCount === 0 && list.length !== 0) {
+        const p = this.createElement('p')
+        p.textContent = 'Everything done, add more?'
+        this.taskList.append(p)
       }
   
       // Debugging
