@@ -29,63 +29,7 @@
         
         // Model.reloadTask(element.id, element.text, element.status)
       })
-      this.list[0] = {
-        id: ++Model.idCountTask,
-        text: 'finished task example 1',
-        status: ModelTask.statusFinish,
-        schedule: false,
-      }
-      this.list[1] = { 
-        id: ++Model.idCountTask,
-        text: 'finished task example 2',
-        status: ModelTask.statusFinish,
-        schedule: false,
-      }
-      this.list[2] = {
-        id: ++Model.idCountTask,
-        text: 'finished task example 3',
-        status: ModelTask.statusFinish,
-        schedule: false,
-      }
-      this.list[3] = {
-        id: ++Model.idCountTask,
-        text: 'task example 1',
-        status: ModelTask.statusNone,
-        schedule: false,
-      }
-      this.list[4] = {
-        id: ++Model.idCountTask,
-        text: 'task example 2',
-        status: ModelTask.statusNone,
-        schedule: false,
-      }
-      this.list[5] = {
-        id: ++Model.idCountTask,
-        text: 'task example 3',
-        status: ModelTask.statusNone,
-        schedule: false,
-      }
-      this.list[6] = {
-        id: ++Model.idCountTask,
-        text: 'removed task example 1',
-        status: ModelTask.statusRemove,
-        schedule: false,
-      }
-      this.list[7] = {
-        id: ++Model.idCountTask,
-        text: 'removed task example 2',
-        status: ModelTask.statusRemove,
-        schedule: false,
-      }
-      this.list[8] = {
-        id: ++Model.idCountTask,
-        text: 'removed task example 3',
-        status: ModelTask.statusRemove,
-        schedule: false,
-      }
-      Model.taskCount = 3
-      Model.finishCount = 3
-      Model.removeCount = 3
+      
     }
   
     bindTaskListChanged(callback) {
@@ -168,7 +112,7 @@
   
     removeModelTask(id) {
       this.id === id ? this.status = ModelTask.statusRemove : this.status
-      ++Model.removeCount
+      Model.removeCount++
       Model.taskCount--
     }
     
@@ -176,11 +120,11 @@
       if (this.id === id) {
         if (this.status == ModelTask.statusFinish) {
           Model.finishCount--
-          ++Model.taskCount
+          Model.taskCount++
         }
         if (this.status == ModelTask.statusRemove) {
           Model.removeCount--
-          ++Model.taskCount
+          Model.taskCount++
         }
         this.status = ModelTask.statusNone 
       }
@@ -189,7 +133,7 @@
 
     finishModelTask(id) {
       this.id === id ? this.status = ModelTask.statusFinish : this.status
-      ++Model.finishCount
+      Model.finishCount++
       Model.taskCount--
     }
   
@@ -209,21 +153,30 @@
 
       // asign the creation of certain HTML element to class attributes
 
-        // create a form
+
         this.form = this.createElement('form')
-        this.form.classList.add('task-list-form')
+          // create input for entering new tasks inside of the form
+          this.input = this.createElement('input')
+            // add atributes to the input
+            this.input.type = 'text'
+            this.input.placeholder = 'Add task'
+            this.input.name = 'task'
 
-        // create input for entering new tasks inside of the form
-        this.input = this.createElement('input')
-          // add atributes to the input
-          this.input.type = 'text'
-          this.input.placeholder = 'Add task'
-          this.input.name = 'task'
+          // create a submit button
+          this.submitButton = this.createElement('button')
+            // add atributes to the submit button
+            this.submitButton.textContent = 'Submit'
 
-        // create a submit button
-        this.submitButton = this.createElement('button')
-          // add atributes to the submit button
-          this.submitButton.textContent = 'Submit'
+        this.form.append(this.input, this.submitButton)
+
+
+        this.formListItem = this.createElement('li')
+        this.formList = this.createElement('ul', 'task-list')
+
+
+        this.formListItem.append(this.form)
+        this.formList.append(this.formListItem)
+        
 
         // create u-lists
         this.taskList = this.createElement('ul', 'task-list')
@@ -244,7 +197,6 @@
            
 
       // append the task input and submit button to the form
-      this.form.append(this.input, this.submitButton)
 
       // create and append finish list to a container
       this.finishListContainer = this.createElement('div')
@@ -280,14 +232,16 @@
       this.rightColumn = this.createElement('td')
       this.rightColumn.classList.add('right-column')
 
-
+      this.paperHole1 = this.createElement('div', 'paper-hole')
+      this.paperHole2 = this.createElement('div', 'paper-hole')
+      this.leftColumn.append(this.paperHole1, this.paperHole2)
      
       // append title, task-list, form, finish-list and remove-list to the app
-      this.rightColumn.append(this.h1, this.taskList)
+      this.rightColumn.append(this.h1,this.formList , this.taskList)
       this.tableRow.append( this.leftColumn, this.centerColumn, this.rightColumn)
       this.table.append(this.tableRow)
       this.taskListContainer.append(this.table)
-      this.bottomContainer.append(this.form, this.finishListContainer, this.removeListContainer)
+      this.bottomContainer.append(this.finishListContainer, this.removeListContainer)
 
       this.app.append(this.taskListContainer, this.bottomContainer)
       
@@ -339,16 +293,21 @@
       
       // Show default message
       if (list.length === 0) {
-        const p = this.createElement('p')
-        p.textContent = 'Nothing to do! Add a task?'
-        this.taskList.append(p)
+        const li = this.createElement('li')
+        li.textContent = 'Nothing to do, add a task?'
+        this.taskList.append(li)
       } 
       else {
+        let taskList = new Array
+        let finishList = new Array
+        let taskListCount = 0
+        let finishListCount = 0
+
         // Create nodes
         list.forEach(task => {
           const li = this.createElement('li')
           li.id = task.id
-          // if the task has no status create a checkbox and remove-button 
+          // if the task has no status create the finish and remove buttons
           if (task.status === ModelTask.statusNone) {
             
             // create button for finishing tasks
@@ -381,22 +340,18 @@
           
           
           
-          
-          const todayButton = this.createElement('button', 'today')
-          todayButton.textContent = 'Today'
-          const tommorowButton = this.createElement('button', 'tommorow')
-          tommorowButton.textContent = 'Tommorow'
 
           
-          li.append( span)
+          li.append(span)
   
           // Append nodes
           // Append to tasklist
           if (task.status === ModelTask.statusNone) {
-          this.taskList.append(li)
+            this.taskList.append(li)
           }
           // Append to finishlist
           if (task.status == ModelTask.statusFinish) {
+            // li.classList.add('finished')
             this.finishList.append(li)
             }
           // Append to removelist
@@ -404,6 +359,8 @@
             this.removeList.append(li)
             }  
         })
+
+
       }
       if (Model.taskCount === 0 && list.length !== 0) {
         const p = this.createElement('p')
@@ -436,7 +393,7 @@
   
     bindRemoveTask(handler) {
       this.taskList.addEventListener('click', event => {
-        if (event.target.className === 'remove') {
+        if (event.target.className === "remove") {
           const id = parseInt(event.target.parentElement.id)
   
           handler(id)
@@ -450,14 +407,14 @@
           const id = parseInt(event.target.parentElement.id)
   
           handler(id, this._temporaryTaskText)
-          this._temporaryTaskText = ''
+          this._temporaryTaskText = ""
         }
       })
     }
   
     bindFinishTask(handler) {
       this.taskList.addEventListener('click', event => {
-        if (event.target.type === 'finish') {
+        if (event.target.className === "finish") {
           const id = parseInt(event.target.parentElement.id)
   
           handler(id)
