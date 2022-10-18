@@ -1,11 +1,84 @@
 body {
-    max-width: 900px;
-    margin: auto
+    max-width: 1000px;
+    margin: auto;
+    background-color: burlywood;
+    
 }
-#root {
-    background-color: beige;
-    padding:50px;
+tr, td {
+    padding: 0px;
+    margin:0px;
+}
+table {
+    border-spacing: 0px;
+
+    width: 100%;
+}
+.tasklist-container {
+    background-color: #FFF;
     margin-top:20px;
+    
+    border-radius: 20px;
+    
+}
+
+
+.right-column {
+  
+    position:relative;
+    right: 100px;
+    
+    
+}
+.center-column{
+    
+    border-left: 2px solid red; 
+    border-right: 2px solid red; 
+    width: 3px;
+    
+}
+.left-column{
+    border:none;
+    
+    
+    
+    width: 20px;
+    padding-left: 72px;
+    
+}
+
+.task-list {
+    font-size: 25px;
+    list-style: disc;
+    list-style-position:inside;
+    padding:0;
+}
+
+
+.task-list button {
+    height: 30px;
+}
+
+.tasklist-container li {
+    border-bottom: 3px solid lightskyblue;
+    padding-left: 20%;
+    width: 91%;
+    
+}
+
+
+
+h1 {
+    padding-left: 130px;
+}
+
+.tasklist-container li:first-child{
+    border-bottom: 3px solid lightskyblue;
+    border-top: 3px solid lightskyblue;
+}
+.bottom-container {
+    background-color: gray;
+    padding:10px;
+
     border-radius: 50px;
 }
 li button {
@@ -13,7 +86,6 @@ li button {
 }
 li:hover {
     background-color: rgba(25,25,25,0.2);    
-    border-radius: 5px;
 }
 li:hover button {
     visibility: visible;
@@ -23,42 +95,15 @@ li button {
 }
 li {
     /* height:25px; */
-    vertical-align: center;
+    /* vertical-align: center; */
 }
 
 li span{
-    margin-right: 25px;
+    
     padding: 0 5px 0 5px;
 }
-.finished {
-    text-decoration: line-through;
-    text-decoration-color: rgb(0, 0, 0);
-}
-.finished span {
-    background-color: lightgreen;
-    color: rgb(0, 0, 0);
-    
-}
-.failed {
-    text-decoration: underline;
-}
-.failed span {
-    background-color: lightcoral;
-    
-}
-#remove-icon {
-    height: 1em;
-}
-.fail-button {
-    background-color: lightcoral;
-    border-color: red;
-    border-radius: 15%;
-}
-.finish-button {
-    background-color: lightgreen;
-    border-color: green;
-    border-radius: 15%;
-}
+
+
 /* BUTTON THAT LOOKS LIKE A RADIO */
 /* .test {
     width: 14px;
@@ -84,18 +129,29 @@ li span{
 } */
 
 
-.task-list {
-    font-size: 25px;
-    list-style: none;
-}
-.bottom-list {
-    background: rgba(61, 236, 0, 1);
+.finish-list {
+    background: rgb(169, 231, 147);
     border-radius: 20px;
 }
 .remove-list {
     background-color: #DDD;
     border-radius: 20px;
 
+}
+.finish-list-container {
+    background-color:rgba(61, 236, 0, 1);
+    border-radius: 20px;
+}
+.finish-list-container h4 { 
+    margin-left: 15px;
+}
+
+.remove-list-container {
+    background-color:#BBB;
+    border-radius: 20px;
+}
+.remove-list-container h4 { 
+    margin-left: 15px;
 }
 input {
     border-radius: 50px;
