@@ -298,66 +298,69 @@
         this.taskList.append(li)
       } 
       else {
-        let taskList = new Array
-        let finishList = new Array
-        let taskListCount = 0
-        let finishListCount = 0
+        let taskListArray = new Array
+        let finishListArray = new Array
+        let taskListCountArray = 0
+        let finishListCountArray = 0
 
         // Create nodes
         list.forEach(task => {
+          
+  
+          // Append nodes
+          // Append to tasklist
+          if (task.status === ModelTask.statusNone) {
+            taskListArray[taskListCountArray++] = task
+          }
+          // Append to finishlist
+          if (task.status == ModelTask.statusFinish) {
+            // li.classList.add('finished')
+            finishListArray[finishListCountArray++] = task
+            }
+    
+        })
+        
+        taskListArray.forEach(task => {
           const li = this.createElement('li')
           li.id = task.id
-          // if the task has no status create the finish and remove buttons
-          if (task.status === ModelTask.statusNone) {
-            
-            // create button for finishing tasks
-            const finishButton = this.createElement('button', 'finish')
-            finishButton.textContent = 'Finish'
 
-            // create remove-button for removing tasks
-            const removeButton = this.createElement('button', 'remove')
-            removeButton.textContent = 'Remove'
+          // create button for finishing tasks
+          const finishButton = this.createElement('button', 'finish')
+          finishButton.textContent = 'Finish'
 
-            //append the buttons to the list item
-            li.append(removeButton, finishButton)
-          }
+          // create remove-button for removing tasks
+          const removeButton = this.createElement('button', 'remove')
+          removeButton.textContent = 'Remove'
 
-          if (task.status === ModelTask.statusFinish || task.status === ModelTask.statusRemove) {
-            // create recover-button for recovering tasks
-            const recoverButton = this.createElement('button', 'recover')
-            recoverButton.textContent = 'Recover'
+          //append the buttons to the list item
 
-            //append the recover-button to the list item
-            li.append(recoverButton)
-          }
-  
           const span = this.createElement('span')
           span.contentEditable = true
           span.classList.add('editable')
   
           
           span.textContent = task.text
-          
-          
-          
 
           
-          li.append(span)
-  
-          // Append nodes
-          // Append to tasklist
-          if (task.status === ModelTask.statusNone) {
-            this.taskList.append(li)
-          }
-          // Append to finishlist
-          if (task.status == ModelTask.statusFinish) {
-            // li.classList.add('finished')
-            this.finishList.append(li)
-            }
-          // Append to removelist
-          if (task.status == ModelTask.statusRemove) {
-            this.removeList.append(li)
-            }  
+          li.append(span, finishButton, removeButton)
+          this.taskList.append(li)
+        })
+        finishListArray.forEach(task => {
+          const li = this.createElement('li')
+          li.id = task.id
+
+          // create recover-button for recovering tasks
+          const recoverButton = this.createElement('button', 'recover')
+          recoverButton.textContent = 'Recover'
+
+
+          const span = this.createElement('span', 'finished')
+          span.contentEditable = true
+          span.classList.add('editable')
+          span.textContent = task.text
+
+          li.append(span, recoverButton)
+          this.taskList.append(li)
         })
 
 
@@ -423,20 +426,20 @@
     }
 
     bindRecoverTask(handler) {
-      this.finishList.addEventListener('click', event => {
+      this.taskList.addEventListener('click', event => {
         if (event.target.className === 'recover') {
           const id = parseInt(event.target.parentElement.id)
   
           handler(id)
         }
       })
-      this.removeList.addEventListener('click', event => {
-        if (event.target.className === 'recover') {
-          const id = parseInt(event.target.parentElement.id)
+      // this.removeList.addEventListener('click', event => {
+      //   if (event.target.className === 'recover') {
+      //     const id = parseInt(event.target.parentElement.id)
   
-          handler(id)
-        }
-      })
+      //     handler(id)
+      //   }
+      // })
     }
 
     // bindScheduleTodayTask(handler) {
