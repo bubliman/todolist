@@ -2,7 +2,7 @@ body {
     max-width: 800px;
     min-width: 400px;
     margin: auto;
-    background-color: burlywood;
+    background-color: bisque;
 }
 tr, td {
     padding: 0px;
@@ -134,31 +134,6 @@ li span{
     
     padding: 0 5px 0 5px;
 }
-
-
-/* BUTTON THAT LOOKS LIKE A RADIO */
-/* .test {
-    width: 14px;
-    height: 14px;
-    padding: 2px;
-    
-    background-color: white;
-    border-radius: 50%;
-    margin:unset;
-    border: 2px solid rgb(0, 184, 0);
-}
-.test {
-    background-image: linear-gradient(rgb(0, 184, 0), rgb(0, 184, 0)), 
-        linear-gradient(white, white);
-    background-clip: content-box, padding-box;
-
-}
-.test:hover {
-    background-image: linear-gradient(green, green),
-        linear-gradient(white, white);
-    border: 2px solid rgb(green);
-
-} */
 
 li {
     list-style: none;
