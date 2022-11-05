@@ -7,7 +7,7 @@
     </head>
 
     <body>
-        <div id="root">
+        <div id="root" editor>
             <div class="tasklist-container">
                 <table class="table">
                     <tr class="table-row">
@@ -17,7 +17,7 @@
                         </td>
                         <td class="center-column"></td>
                         <td class="right-column">
-                            <h1>Tasks</h1>
+                            <p id="list-title" contenteditable="true"></p>
                             <ul class="task-list">
                                 <li>
                                     <form action="#">
@@ -26,7 +26,7 @@
                                     </form>
                                 </li>
                             </ul>
-                            <ul class="task-list" id="task-list">
+                            <ul class="task-list" id="tasklist">
                             </ul>
                         </td>
                     </tr>

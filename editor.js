@@ -1,44 +1,39 @@
-/* Load in lists from Localstorage */
-let list = JSON.parse(localStorage.getItem('list')) ?? { }
-if (list = undefined) {
-  let list = new List ('Untitled List', , )
-}
-renderList()  
-  
+
 class List {
   constructor(title) {
     this.id = Date.now()
     this.title = title
     this.tasksMap = new Map();
-    tasksMap.set(new Task ('Click here to add a task', this.id))
+    this.tasksMap.set(1, new Task ('Click here to add a task', this.id))
   }
-  updateList(tasks) {
-    this.id === id ? this.tasks = tasks : this.status
+  addTaskToList(title) {
+    taskID = Date.now()
+    this.id === id ? this.tasksMap.set(taskID, new Task (taskID, title, this.id)) : this.tasksMap
   }
-  addTaskToList() {
-    new Task
+  renderList() {
+    const domListTitle = document.getElementById('list-title')
+    domListTitle.innerText = this.title
+    const domList = document.getElementById('tasklist')
+    domList.innerHTML = ''
+
+    this.tasksMap.forEach(task => {
+      if(task.status != 'removed')
+      domList.innerHTML += createHTML(task)
+    })
+
+    /* Also update the JSON if SPAN is changed, eh hacky */
+    // document.querySelectorAll('[class~=task-title]').forEach(element => {
+    //     element.addEventlistener("input", function(e) {
+    //         tasks[e.srcElement.parentElement.id].title = e.explicitOriginalTarget.textContent
+    //         pushChanges()
+    //     }, false);
+    // });
   }
+  
 }
-/* Load in tasks from Localstorage */
-// let tasks = JSON.parse(localStorage.getItem('tasks')) ?? { }
-// renderTasks()
-
-function addTask() {
-    let taskInput = document.getElementById('task-input')
-    if(taskInput.value != '') {
-      addTaskToList()
-      taskInput.value = ''
-      taskInput.select()
-      renderList()
-    }
-  }
-
-/*
- * status: active | removed | finished
-*/
 class Task {
-  constructor(title, listID) {
-    this.id = Date.now()
+  constructor(id, title, listID) {
+    this.id = id
     this.listID = listID
     this.title = title
     this.status = 'active'
@@ -48,33 +43,35 @@ class Task {
   finishTask(id) {
     this.id === id ? this.status = 'finished' : this.status
   }
-  activateTask() {
+  activateTask(id) {
     this.id === id ? this.status = 'active' : this.status
   }
-  removeTask() {
+  removeTask(id) {
     this.id === id ? this.status = 'removed' : this.status
   }
 }
 
-function renderList() {
-    const domListTitle = document.getElementById('list-title')
-    const domList = document.getElementById('tasklist')
-    domList.innerHTML = ''
-
-    for(const id in tasks)
-    {
-        if(tasks[id].status != 'removed')
-        domList.innerHTML += createHTML(tasks[id], id)
+// /* Load in lists from Localstorage */
+// let list = JSON.parse(localStorage.getItem('list')) ?? { }
+// if (list) {
+  let list = new List ('Untitled List')
+// }
+list.renderList()  
+  
+function addTask() {
+    let taskInput = document.getElementById('task-input')
+    if(taskInput.value != '') {
+      list.addTaskToList(taskinput.value)
+      taskInput.value = ''
+      taskInput.select()
+      renderList()
     }
+  }
 
-    /* Also update the JSON if SPAN is changed, eh hacky */
-    // document.querySelectorAll('[class~=task-title]').forEach(element => {
-    //     element.addEventlistener("input", function(e) {
-    //         tasks[e.srcElement.parentElement.id].title = e.explicitOriginalTarget.textContent
-    //         pushChanges()
-    //     }, false);
-    // });
-}
+/*
+ * status: active | removed | finished
+*/
+
 
 /* Save all tasks to localStorage */
 function pushChanges() {
@@ -82,7 +79,8 @@ function pushChanges() {
 }
 
 /* Template for a task */
-function createHTML(task, id) {
+function createHTML(task) {
+  let id = task.id
     return `
         <li id="${id}">
             <span class="task-title ${task.status == 'finished' ? 'finished' : ''} editable" contenteditable="true">${task.title}</span>
