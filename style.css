@@ -1,10 +1,46 @@
 
 .tasklist-container {
     background-color: lightblue;
+    margin: auto;
     width: 400px;
     height: 400px;
     padding: 20px;
 }
 .finished {
-    background-color: green;
+    text-decoration:line-through;
+}
+.task-list {
+    list-style-type: "– ";
+}
+
+.untitled {
+    color:#444;
+}
+
+
+ .title-input {
+    
+    padding:0 6px 0 3px;
+}
+input {
+    background: rgba(0,0,0,0);
+    border: none;
+    height: 22px;
+    font-size: 1.1em;
+}
+input:focus {
+    background-color: white;
+    outline: 2px blue solid; 
+    border-radius: 2px;
+ 
+ }
+input:hover:not(:focus) {
+    outline: 1px gray solid; 
+    border-radius: 2px;
+}
+li button {
+    visibility: hidden;
+}
+li:hover button {
+    visibility: visible;
 }

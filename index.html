@@ -9,7 +9,9 @@
     <body>
         <div id="root" editor>
             <div class="tasklist-container">
-                <p id="list-title" contenteditable="true"></p>
+                <span id="list-title" contenteditable="true"></span>
+                <ul class="task-list" id="tasklist">
+                </ul>
                 <ul class="task-list">
                     <li>
                         <form action="#">
@@ -17,8 +19,6 @@
                             <button onclick="addTask()">Submit!</button>
                         </form>
                     </li>
-                </ul>
-                <ul class="task-list" id="tasklist">
                 </ul>
             </div>
         </div>
