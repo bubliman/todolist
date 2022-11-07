@@ -10,6 +10,7 @@
     text-decoration:line-through;
 }
 .task-list {
+    margin: 0;
     list-style-type: "– ";
 }
 

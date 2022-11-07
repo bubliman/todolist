@@ -3,8 +3,28 @@ class List {
     this.id = Date.now()
     this.title = 'Untitled List'
     this.tasksMap = new Map();
-    const id = Date.now()
+    // const id = Date.now()
     // this.tasksMap.set(id, new Task (id, 'Click here to add a task', this.id))
+  }
+  saveList() {
+    let jsonMap = JSON.stringify(Array.from(this.tasksMap.entries()))
+    let jsonList = {
+      id:this.id,
+      title:this.title,
+      tasksMap:jsonMap
+    }
+    return jsonList
+  }
+  loadList(jsonList) {
+    let taskID = Date.now()
+    this.id = jsonList.id
+    this.title = jsonList.title
+    this.tasksMap = new Map(JSON.parse(jsonList.tasksMap))
+    this.tasksMap.forEach(element => {
+      let task = new Task (taskID, 'temp', this.id)
+      let taskObject = task.loadTask(element)
+      this.tasksMap.set(taskObject.id, taskObject)
+    })
   }
   addTaskToList(title) {
     let taskID = Date.now()
@@ -40,60 +60,66 @@ class List {
       domList.innerHTML += createHTML(task)
     })
     domList.addEventListener('focusout', event => {
-      let task = event.parentElement
-      // task.editTask(task.value)
+      let domTask = document.getElementsByClassName('task-title')
+      const id = parseInt(event.target.parentElement.id)
+      let task = list.tasksMap.get(id)
+      task.editTask(domTask.value)
     })
-    domList.addEventListener('keypress', event => {
-      if (event.key === 'Enter') {
-      domListTitleInput.value = list.editTitle(domListTitleInput.value)
-      }
-    })
-
-    /* Also update the JSON if SPAN is changed, eh hacky */
-    // document.querySelectorAll('[class~=task-title]').forEach(element => {
-    //     element.addEventlistener("input", function(e) {
-    //         tasks[e.srcElement.parentElement.id].title = e.explicitOriginalTarget.textContent
-    //         pushChanges()
-    //     }, false);
-    // });
+    pushChanges()
+    // domList.addEventListener('keypress', event => {
+    //   if (event.key === 'Enter') {
+    //   domListTitleInput.value = list.editTitle(domListTitleInput.value)
+    //   }
+    // })
   }
   editTitle(title) {
     this.title = title
     this.renderList()
   }
-  listTitle
+  
+  
 
 }
 
 class Task {
-  constructor(id, title, listID) {
+  constructor(id, title, listID, status = 'active') {
     this.id = id
     this.title = title
     this.listID = listID
-    this.status = 'active'
-    
+    this.status = status
+  }
+  loadTask(task) {
+    this.id = task.id
+    this.title = task.title
+    this.listID = task.listID
+    this.status = task.status
+    return this
   }
   static listID = this.listID
-  finishTask(id) {
+  finishTask() {
     this.status = 'finished'
     list.renderList()
   }
-  activateTask(id) {
-    this.id === id ? this.status = 'active' : this.status
+  activateTask() {
+    this.status = 'active'
     list.renderList()
   }
-  removeTask(id) {
-    this.id === id ? this.status = 'removed' : this.status
+  removeTask() {
+    this.status = 'removed'
     list.renderList()
   }
-  editTask() {}
+  editTask(newTitle) {
+    this.title = newTitle
+    list.renderList()
+  }
 }
 
-// /* Load in lists from Localstorage */
-// let list = JSON.parse(localStorage.getItem('list')) ?? { }
-// if (list) {
-  let list = new List()
-// }
+/* Load in lists from Localstorage */
+let jsonList = JSON.parse(localStorage.getItem('list')) ?? { }
+let list = new List()
+if (jsonList != undefined) {
+  list.loadList(jsonList)
+}
 list.renderList()  
   
 function addTask() {
@@ -103,6 +129,7 @@ function addTask() {
       taskInput.value = ''
       taskInput.select()
       list.renderList()
+      
     }
   }
 
@@ -113,18 +140,18 @@ function addTask() {
     if (event.target.className === 'activate') {
       const id = parseInt(event.target.parentElement.id)
       let task = list.tasksMap.get(id)
-      task.activateTask(id)
+      task.activateTask()
     }
     if (event.target.className === 'remove') {
       const id = parseInt(event.target.parentElement.id)
       let task = list.tasksMap.get(id)
-      task.removeTask(id)
+      task.removeTask()
       
     }
     if (event.target.className === 'finish') {
       const id = parseInt(event.target.parentElement.id)
       let task = list.tasksMap.get(id)
-      task.finishTask(id)
+      task.finishTask()
     }
   
   })
@@ -132,8 +159,9 @@ function addTask() {
   
 
 /* Save all tasks to localStorage */
+
 function pushChanges() {
-    localStorage.setItem('lists', JSON.stringify(list));
+    localStorage.setItem('list', JSON.stringify(list.saveList()));
 }
 function taskManager(task, id, command) {
   command === 'finish' ? task.finishTask(id) : { }
