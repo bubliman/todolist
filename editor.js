@@ -121,7 +121,7 @@ class Task {
 }
 
 /* Load in lists from Localstorage */
-let list = new List()
+let list = new List() 
 let jsonList = JSON.parse(localStorage.getItem('list'))
 if (jsonList != undefined) {
   list.loadList(jsonList)

@@ -1,0 +1,35 @@
+
+
+stylize finish and remove list
+
+
+
+FIX SAVED TASKS NOT WORKING    fix bug when saved refresh you can't manipulate tasks
+
+
+features to add: 
+    X task nesting !!!! (not a great idea bruh)
+    - scheduling tasks
+    - add Tasks of the day
+    - add Tasks of tommorow
+    
+
+    - List view page with two vertical pillars - add List management
+     - one pillar is your today tasks and other scheduled tasks
+     - the other pillar is a scrollebla view of all your most recent lists sortable and filterable
+
+    -add list tags
+    
+ page with only the scheduled tasks so that u can focus
+
+
+- repetitive tasks and tracking your goals with them
+
+
+
+
+
+good domains:
+    daylisted.com
+    daylister.com
+    day-list.com
