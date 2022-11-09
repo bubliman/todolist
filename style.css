@@ -45,3 +45,6 @@ li button {
 li:hover button {
     visibility: visible;
 }
+li:focus button {
+    visibility: visible;
+}
