@@ -20,8 +20,8 @@ class List {
     this.id = jsonList.id
     this.title = jsonList.title
     this.tasksMap = new Map(JSON.parse(jsonList.tasksMap))
-    this.tasksMap.forEach(element => {
-      let task = new Task (taskID, 'temp', this.id)
+    this.tasksMap.forEach         (element => {
+      task = new Task ()
       let taskObject = task.loadTask(element)
       this.tasksMap.set(taskObject.id, taskObject)
     })
@@ -60,10 +60,12 @@ class List {
       domList.innerHTML += createHTML(task)
     })
     domList.addEventListener('focusout', event => {
-      let domTask = document.getElementsByClassName('task-title')
-      const id = parseInt(event.target.parentElement.id)
+      let domTaskInput = document.getElementsByClassName('task-title')
+      let domTask = parseInt(event.target.parentElement)
+      let value = domTaskInput.value
+      let id = domTask.id
       let task = list.tasksMap.get(id)
-      task.editTask(domTask.value)
+      task.editTask(value)
     })
     pushChanges()
     // domList.addEventListener('keypress', event => {
@@ -174,7 +176,7 @@ function createHTML(task) {
   let id = task.id
     return `
         <li id="${id}">
-            <input class="task-title ${task.status == 'finished' ? 'finished' : ''}" value="${task.title}">
+            <input class="task-title${task.status == 'finished' ? ' finished' : ''}" value="${task.title}">
 
             ${task.status == 'finished' ? `
             <button class="activate">✘</button>
