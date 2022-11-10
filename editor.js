@@ -1,22 +1,11 @@
 class List {
   constructor() {
     this.id = Date.now()
-    this.title = 'Untitled List'
+    this.title = ''
     this.tasks = {}
-    // const id = Date.now()
-    // this.tasksMap.set(id, new Task (id, 'Click here to add a task', this.id))
   }
-  // saveList() {
-  //   let jsonMap = JSON.stringify(Array.from(this.tasksMap.entries()))
-  //   let jsonList = {
-  //     id:this.id,
-  //     title:this.title,
-  //     tasksMap:jsonMap
-  //   }
-  //   return jsonList
-  // }
+  /* Loads list from JSON object into class object */
   loadList(jsonList) {
-    // let taskID = Date.now()
     this.id = jsonList.id
     this.title = jsonList.title
     this.tasks = jsonList.tasks
@@ -25,19 +14,19 @@ class List {
       this.tasks[id] = {task:new Task (oldTask.id, oldTask.title, oldTask.listID, oldTask.status)}
     }
   }
-  addTaskToList(title) {
-    // let task = new Task (Date.now(), title, this.id)
+  /* Encapsulates task into the this.tasks object */
+  encapsulateTask(title) {
     let id = Date.now()
     this.tasks[id] = {task:new Task (id, title, this.id)}
-    
   }
+  /* Renders the List onto the page */
   renderList() {
     const domListTitle = document.getElementById('list-title')
     domListTitle.innerHTML = ''
     let domListTitleInput = document.createElement('input')
     domListTitleInput.classList = 'title-input'
-    if (this.title === 'Untitled List') {
-      domListTitleInput.classList.add('untitled')
+    if (this.title === '') {
+      // domListTitleInput.classList.add('untitled')
       domListTitleInput.addEventListener('focus', event => {
         domListTitleInput.select()
       })
@@ -74,7 +63,6 @@ class List {
       if(task.status != 'removed')
       domList.innerHTML += createHTML(this.tasks[id].task)
     }
-    
     console.log(this)
     pushChanges()
   }
@@ -82,11 +70,7 @@ class List {
     this.title = title
     this.renderList()
   }
-  
-  
-
 }
-
 class Task {
   constructor(id, title, listID, status = 'active') {
     this.id = id
@@ -94,13 +78,6 @@ class Task {
     this.listID = listID
     this.status = status
     }
-  // loadTask(task) {
-  //   this.id = task.id
-  //   this.title = task.title
-  //   this.listID = task.listID
-  //   this.status = task.status
-  //   return this
-  // }
   static listID = this.listID
   finishTask() {
     this.status = 'finished'
@@ -119,7 +96,6 @@ class Task {
     list.renderList()
   }
 }
-
 /* Load in lists from Localstorage */
 let list = new List() 
 let jsonList = JSON.parse(localStorage.getItem('list'))
@@ -127,18 +103,15 @@ if (jsonList != undefined) {
   list.loadList(jsonList)
 }
 list.renderList()  
-  
 function addTask() {
     let taskInput = document.getElementById('task-input')
     if(taskInput.value != '') {
-      list.addTaskToList(taskInput.value)
+      list.encapsulateTask(taskInput.value)
       taskInput.value = ''
       taskInput.select()
       list.renderList()
-      
     }
   }
-
   const domList = document.getElementById('tasklist')
   const domListTitle = document.getElementById('list-title')
   const domListTitleInput = domListTitle.firstChild
@@ -151,15 +124,13 @@ function addTask() {
     if (event.target.className === 'remove') {
       const id = parseInt(event.target.parentElement.id)
       let task = list.tasks[id].task
-      task.removeTask()
-      
+      task.removeTask()  
     }
     if (event.target.className === 'finish') {
       const id = parseInt(event.target.parentElement.id)
       let task = list.tasks[id].task
       task.finishTask()
     }
-  
   })
 /* Save all tasks to localStorage */
 function pushChanges() {
@@ -170,7 +141,7 @@ function createHTML(task) {
   let id = task.id
     return `
         <li id="${id}">
-            <input class="task-title${task.status == 'finished' ? ' finished' : ''}" value="${task.title}">
+            <input class="task-title${task.status == 'finished' ? ' finished' : ''}" value="${task.title}" placeholder="Untitled todolist">
 
             ${task.status == 'finished' ? `
             <button class="activate">✘</button>
